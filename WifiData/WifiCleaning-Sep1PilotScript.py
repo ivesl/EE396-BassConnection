@@ -36,7 +36,8 @@ def reduce(dic):
     return dic
 
 #Imports events from the whole day on 9/1/2020
-dfData = pd.read_csv("2020-09-01.csv")
+#May need to correct file location later
+dfData = pd.read_csv("WifiData/2020-09-01.csv")
 
 #include connections of association type only
 dfData = dfData[dfData['ssid'].str.contains('unknown')]
@@ -54,13 +55,15 @@ dfData['time'].min
 dfData['time'].max
 
 #Imports dataframe with access point location
-dfAps = pd.read_csv("bryan_center_aps_2019-12-10-Edited.csv")
+dfAps = pd.read_csv("WifiData/bryan_center_aps_2019-12-10-Edited.csv")
 
 #Creates a dictionary for the counts of users at each access point
-dicCount = {ap: 0.0 for ap in dfAps['name']}
+dicCount = {ap: 0 for ap in dfAps['name']}
 
 #Why is this accesspoing singled out?
 dicCount["7791-bryancenter-roof-11"] = 0
+dicCount["bryancenter-002g-ap3602i-rc-1"] = 0
+
 dicUser = {}
 
 # dictionary of user to ap - need to examine more
@@ -74,6 +77,7 @@ dfRet = pd.DataFrame.from_dict(dicCount, orient='index')
 dfRet.rename(columns={0: 'Count'}, inplace=True)
 
 listTime = [date + ' {:02d}:{:02d}'.format(*divmod(0, 60)) for k in dicCount]
+
 dfRet['Time'] = listTime
 dfRet['minTime'] = [0 for k in dicCount]
 
